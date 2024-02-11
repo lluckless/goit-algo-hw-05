@@ -10,9 +10,6 @@ def input_error(func):
             return "Not found."
     return inner
 
-
-
-
 @input_error
 def parse_input(user_input):                     
     cmd, *args = user_input.split()              # Розділяє строку по пробілу на команду і аргументи
