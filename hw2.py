@@ -1,19 +1,18 @@
-
+from typing import Callable
 import re
+from functools import reduce
 
-def generator_numbers(text):
-    # Використовуємо регулярний вираз для знаходження всіх дійсних чисел у тексті
-    pattern = r'\b\d+\.\d+\b'
-    for match in re.finditer(pattern, text):
-        yield float(match.group())
+def generator_numbers(text: str):
+    numbers = map(float,filter(lambda x: re.match(r'\b\d+\.\d+\b', x), text.split(" "))) 
+    for number in numbers:
+        yield number
 
-def sum_profit(text):
-    total_profit = 0
-    for number in generator_numbers(text):
-        total_profit += number
-    return total_profit
+def sum_profit(text: str, func: Callable):
+    return reduce(lambda x,y: x+y ,func(text))
+    
 
-text = "Прибуток за перший квартал склав 1000.50, за другий - 200.75, а за третій - 150.25"
-total_profit = sum_profit(text)
-print("Загальний прибуток:", total_profit)
+if __name__=="__main__":
+    text = "Загальний дохід працівника складається з декількох частин: 1000.01 як основний дохід, доповнений додатковими надходженнями 27.45 і 324.00 доларів."
+    total_income = sum_profit(text, generator_numbers)
+    print(f"Загальний прибуток: {total_income}")
 
